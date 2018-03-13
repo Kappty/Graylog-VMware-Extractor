@@ -1,0 +1,50 @@
+{
+  "extractors": [
+    {
+      "title": "VMware Event",
+      "extractor_type": "grok",
+      "converters": [],
+      "order": 1,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "",
+      "extractor_config": {
+        "grok_pattern": "\\[%{NUMBER:VMware_EventID}\\] %{NOTSPACE} \\[%{TIMESTAMP_ISO8601:timestamp}\\] %{VMWARE_EVENTTYPE} \\[%{LOGLEVEL:VMware_Loglevel}\\] \\[%{USER:VMware_Domain}?\\\\?%{USER:VMware_Username}?\\W %{GREEDYDATA:message}",
+        "named_captures_only": true
+      },
+      "condition_type": "string",
+      "condition_value": "vim.event"
+    },
+    {
+      "title": "VMware Last resort",
+      "extractor_type": "grok",
+      "converters": [],
+      "order": 2,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "",
+      "extractor_config": {
+        "grok_pattern": "\\[%{NUMBER:VMware_EventID}\\]%{GREEDYDATA:message}",
+        "named_captures_only": true
+      },
+      "condition_type": "none",
+      "condition_value": ""
+    },
+    {
+      "title": "VMware Login",
+      "extractor_type": "grok",
+      "converters": [],
+      "order": 0,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "",
+      "extractor_config": {
+        "grok_pattern": "\\[%{NUMBER:VMware_EventID}\\] %{NOTSPACE} \\[%{TIMESTAMP_ISO8601:timestamp}\\] %{VMWARE_EVENTTYPE} \\[%{LOGLEVEL:VMware_Loglevel}\\] \\[%{USER:VMware_Domain}\\\\%{USER:VMware_Username}\\W \\[\\] \\[%{NUMBER}\\] \\[%{GREEDYDATA:message}\\]",
+        "named_captures_only": true
+      },
+      "condition_type": "string",
+      "condition_value": "UserLoginSessionEvent"
+    }
+  ],
+  "version": "2.4.3"
+}
